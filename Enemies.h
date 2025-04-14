@@ -9,7 +9,8 @@ public:
     Enemies();
     Enemies(vector<Enemy*>);
     void printNames();
-    void addEnemy(Enemy);
+    void addEnemy(Enemy*);
+    Enemy* getEnemy(string);
     ~Enemies();
 private:
     vector<Enemy*> enemies;

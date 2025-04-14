@@ -11,6 +11,7 @@ public:
     string getName();
     int angrib();
     void tagSkade(int);
+    int getXP();
     bool erDoed();
     ~Enemy();
 public:

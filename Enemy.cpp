@@ -14,7 +14,7 @@ Enemy::Enemy(string n){
         styrke = 2;
         xp = 200;
     }
-    else if(navn == "Strong Golbin"){
+    else if(navn == "Strong Goblin"){
         hp = 8;
         styrke = 3;
         xp = 400;
@@ -64,6 +64,10 @@ int Enemy::angrib(){
 
 void Enemy::tagSkade(int s){
     hp -= s;
+}
+
+int Enemy::getXP(){
+    return xp;
 }
 
 bool Enemy::erDoed(){

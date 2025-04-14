@@ -7,15 +7,25 @@ using namespace std;
 class Hero{
 public: 
     Hero();
-    Hero();
     void createHero(string name);
     void setName();
     void chooseHero();
     int attack();
+    void takeDamage(int);
     void levelUp();
     void gainXP(int XP);
     void initializeHeroes();
     void showHeroes();
+
+    //get metoder:
+    string getName();
+    int getXP();
+    int getLevel();
+    int getStyrke();
+    int getHP();
+    void getStats();
+
+    bool erDoed();
     ~Hero();
 private:
     string navn;
@@ -23,5 +33,6 @@ private:
     int level;
     int styrke;
     int hp;
+    int baseHP;
     vector<string> heroes = {};
 };

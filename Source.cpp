@@ -5,18 +5,17 @@ using namespace std;
 #include <string>
 #include <iostream>
 
-void startGame(){
-    Hero h;
+void startGame(Hero& hero){
     string valg;
     while(true){
         cout << "Vil du lave eller vælge en eksisterende hero? (type [choose] or [create])" << endl;
         cin >> valg;
         if(valg =="choose"){
-            h.chooseHero();
+            hero.chooseHero();
             return;
         }
         else if(valg == "create"){
-            h.setName();
+            hero.setName();
             return;
         }
         cout <<"invalid option, please try again! " << endl;
@@ -25,16 +24,16 @@ void startGame(){
 
 
 Enemies createEnemies(){
-    vector<Enemy*> enemies;
-    vector<string> enemiesNames = {"Hest", "Weak Golbin", "Strong Goblin", "Stronger Goblin","The Strongest Goblin","Abe King", "Unicorn", "Dragon"};
+    vector<Enemy*> enemyList;
+    vector<string> enemiesNames = {"Hest", "Weak Goblin", "Strong Goblin", "Stronger Goblin","The Strongest Goblin","Abe King", "Unicorn", "Dragon"};
     for(int i=0; i<enemiesNames.size(); i++){
-        enemies.push_back(new Enemy(enemiesNames[i]));
+        enemyList.push_back(new Enemy(enemiesNames[i]));
     }
     cout << "Enemies created: " << endl;
     for(int i =0; i<enemiesNames.size(); i++){
-        cout << enemies[i]->getName() << endl;
+        cout << enemyList[i]->getName() << endl;
     }
-    Enemies enemies(enemies);
+    Enemies enemies(enemyList);
     return enemies;
 }
 
@@ -47,7 +46,54 @@ void showEnemies(vector<Enemy> enemies){
 int main(){
     Enemies enemies = createEnemies();
     cout << "Starting game ..." << endl;
-    startGame();
+    Hero hero;
+    startGame(hero);
+
+    while(true){
+        cout << "\n--- Main Menu ---" << endl;
+        cout << "1. Show Hero Stats" << endl;
+        cout << "2. Show Enemies" << endl;
+        cout << "3. Attack an Enemy" << endl;
+        cout << "4. Exit Game" << endl; 
+
+        int choice;
+        cin >> choice;
+        if (choice ==1){
+            hero.getStats();
+        }
+        if(choice == 2){
+            enemies.printNames();
+        }
+        if(choice == 3){
+            cout << "Choose an enemy: " << endl;
+            enemies.printNames();
+            string chosenEnemy;
+            cin >> chosenEnemy;
+            Enemy* currentEnemy = enemies.getEnemy(chosenEnemy);
+            while(true){
+                cout << hero.getName() << " angriber " << currentEnemy->getName() << endl;
+                currentEnemy->tagSkade(hero.getStyrke());
+                if(currentEnemy->erDoed()){
+                    cout << hero.getName() << " vandt!!" << endl;
+                    break;
+                }
+                cout << currentEnemy->getName() << " angriber!!" <<endl;
+                hero.takeDamage(currentEnemy->angrib());
+                if(hero.erDoed()){
+                    cout << hero.getName() << " døde. Bedre held næste gang" << endl;
+                    return 0;
+                }
+            }
+            hero.gainXP(currentEnemy->getXP());
+            
+        }
+        if(choice == 4){
+            cout << "Exiting game..." << endl;
+            return 0;
+        }
+
+    }
+
 
     return 0;
 }

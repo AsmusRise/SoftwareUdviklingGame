@@ -1,7 +1,5 @@
 #include "MainCharacter.h"
 
-Hero::Hero(){}
-
 Hero::Hero(){
     initializeHeroes();
     navn = "empty";
@@ -9,6 +7,7 @@ Hero::Hero(){
     level = 1;
     styrke = 2;
     hp = 10;
+    baseHP=10;
 }
 
 void Hero::createHero(string n){
@@ -41,15 +40,25 @@ int Hero::attack(){
     return styrke;
 }
 
+void Hero::takeDamage(int d){
+    hp -=d;
+}
+
 void Hero::levelUp(){
     level++;
+    baseHP +=2;
+    hp = baseHP;
+    styrke += 1;
 }
 
 void Hero::gainXP(int XP){
     xp += XP;
+    hp = baseHP;
     if(xp>level*1000){
+        cout << navn << " er steget i level!!! Viser nye stats: " << endl; 
         xp =xp-level*1000;
         levelUp();
+        getStats();
     }
 }
 
@@ -61,6 +70,39 @@ void Hero::showHeroes(){
     for(int i =0; i<heroes.size(); i++){
         cout << heroes[i] << endl;
     }
+}
+
+string Hero::getName(){
+    return navn;
+}
+
+int Hero::getXP(){
+    return xp;
+}
+
+int Hero::getLevel(){
+    return level;
+}
+
+int Hero::getStyrke(){
+    return styrke;
+}
+
+int Hero::getHP(){
+    return hp;
+}
+
+void Hero::getStats(){
+    cout << "\n ---- Hero stats ----" << endl;
+            cout << "Name: " << getName() << endl;
+            cout << "XP: " << getXP() << endl;
+            cout << "Level: " << getLevel() << endl;
+            cout << "Styrke: " << getStyrke() << endl;
+            cout << "HP: " << getHP() << endl;
+}
+
+bool Hero::erDoed(){
+    return hp<0;
 }
 
 Hero::~Hero(){}
