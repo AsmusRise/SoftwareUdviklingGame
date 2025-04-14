@@ -2,29 +2,39 @@
 
 Hero::Hero(){}
 
-void Hero::createHero(string n){
-    navn = n;
+Hero::Hero(){
+    initializeHeroes();
+    navn = "empty";
     xp = 0;
     level = 1;
     styrke = 2;
     hp = 10;
 }
 
-void Hero::loadHero(){
-    xp = 0;
-    level = 1;
-    styrke =2;
-    hp =10;
+void Hero::createHero(string n){
+    navn = n;
 }
 
-void Hero::chooseHero(string n){
-    for(int i = 0; i < heroes.size(); i++) {
-        if (heroes[i] == n) {
-            navn = n;
-            loadHero();
-            return;
+void Hero::setName(){
+    cout << "Choose a name: " << endl;
+    cin >> navn;
+}
+
+void Hero::chooseHero(){
+    while(true){
+        cout << "Showing heroes: " << endl;
+        showHeroes();
+        string chooseName;
+        cout << "Choose hero: " << endl;
+        cin >> chooseName;
+        for(int i = 0; i < heroes.size(); i++) {
+            if (heroes[i] == chooseName) {
+                navn = chooseName;
+                return;
+            }
         }
-    }
+        cout << "invalid Hero, please choose again " << endl;
+    }    
 }
 
 int Hero::attack(){

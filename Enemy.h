@@ -1,3 +1,4 @@
+#pragma once
 using namespace std;
 #include <string>
 #include <iostream>
@@ -6,8 +7,11 @@ using namespace std;
 class Enemy{
 public:
     Enemy();
+    Enemy(string);
+    string getName();
     int angrib();
     void tagSkade(int);
+    bool erDoed();
     ~Enemy();
 public:
     string navn;

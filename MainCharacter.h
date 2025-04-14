@@ -7,9 +7,10 @@ using namespace std;
 class Hero{
 public: 
     Hero();
+    Hero();
     void createHero(string name);
-    void loadHero();
-    void chooseHero(string);
+    void setName();
+    void chooseHero();
     int attack();
     void levelUp();
     void gainXP(int XP);
