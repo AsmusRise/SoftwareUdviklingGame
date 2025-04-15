@@ -34,11 +34,6 @@ Enemies createEnemies(){
     return enemies;
 }
 
-void showEnemies(vector<Enemy> enemies){
-    
-    for(int i=0; i<enemies.size();i++){
-    }
-}
 
 int main(){
     Enemies enemies = createEnemies();
