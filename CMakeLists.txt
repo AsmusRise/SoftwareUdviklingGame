@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(SOURCES
     Source.cpp
     MainCharacter.cpp
-    Game.cpp
     Enemy.cpp
     Enemies.cpp
 )
