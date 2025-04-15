@@ -101,6 +101,14 @@ void Hero::getStats(){
             cout << "HP: " << getHP() << endl;
 }
 
+void Hero::setHP(int h){
+    hp = h;
+}
+
+void Hero::setStyrke(int s){
+    styrke = s;
+}
+
 bool Hero::erDoed(){
     return hp<0;
 }

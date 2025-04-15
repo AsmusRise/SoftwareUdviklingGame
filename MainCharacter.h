@@ -25,6 +25,10 @@ public:
     int getHP();
     void getStats();
 
+    //set metoder:
+    void setHP(int);
+    void setStyrke(int);
+
     bool erDoed();
     ~Hero();
 private:

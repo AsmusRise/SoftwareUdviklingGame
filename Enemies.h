@@ -10,7 +10,7 @@ public:
     Enemies(vector<Enemy*>);
     void printNames();
     void addEnemy(Enemy*);
-    Enemy* getEnemy(string);
+    Enemy* getEnemy(const string&);
     ~Enemies();
 private:
     vector<Enemy*> enemies;
