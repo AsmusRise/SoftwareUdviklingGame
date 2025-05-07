@@ -7,8 +7,7 @@ using namespace std;
 class Enemy{
 public:
     Enemy();
-    Enemy(string, int);
-    string getName();
+    virtual string getName();
     int angrib();
     void tagSkade(int);
     void setHP();
@@ -16,11 +15,13 @@ public:
     bool erDoed();
     int getStyrke();
     int getHP();
-    ~Enemy();
-public:
+    virtual ~Enemy();
+protected:
     string navn;
     int basisHP;
     int hp;
     int styrke;
     int xp;
+    vector <string> modifierNames;
+    string modifierName;
 };

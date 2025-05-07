@@ -6,4 +6,5 @@ public:
     Hest();
     Hest(int);
     ~Hest();
+    string getName() override;
 };

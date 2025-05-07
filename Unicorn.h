@@ -3,7 +3,8 @@
 
 class Unicorn : public Enemy {
 public:
-    Unicorn();         // Default constructor
-    Unicorn(int);      // Constructor with modifier
-    ~Unicorn();        // Destructor
+    Unicorn();         
+    Unicorn(int);   
+    string getName() override;  
+    ~Unicorn();        
 };
