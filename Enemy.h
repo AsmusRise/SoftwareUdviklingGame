@@ -7,7 +7,7 @@ using namespace std;
 class Enemy{
 public:
     Enemy();
-    Enemy(string);
+    Enemy(string, int);
     string getName();
     int angrib();
     void tagSkade(int);

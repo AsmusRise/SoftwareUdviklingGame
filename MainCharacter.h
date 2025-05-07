@@ -28,9 +28,9 @@ public:
     //set metoder:
     void setHP(int);
     void setStyrke(int);
-
     bool erDoed();
     ~Hero();
+    
 private:
     string navn;
     int xp;
