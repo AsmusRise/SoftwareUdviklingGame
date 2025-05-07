@@ -54,5 +54,5 @@ vector<Enemy*> EnemyFactory::createEnemyList(int heroAttack, int heroHP){
     }
     return enemyList;
 }
-
+    
 EnemyFactory::~EnemyFactory(){}
