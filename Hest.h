@@ -7,4 +7,5 @@ public:
     Hest(int);
     ~Hest();
     string getName() override;
+    int getStyrke() override;
 };

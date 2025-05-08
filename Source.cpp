@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Enemies.h"
 #include "MainCharacter.h"
+#include "Grotte.h"
 using namespace std;
 #include <string>
 #include <iostream>
@@ -23,29 +24,40 @@ void startGame(Hero& hero){
     }
 }
 
-
-Enemies createEnemies(){
-    vector<Enemy*> enemyList;
-    vector<string> enemiesNames = {"Hest", "WeakGoblin", "StrongGoblin", "StrongerGoblin","TheStrongestGoblin","AbeKing", "Unicorn", "Dragon"};
-    for(int i=0; i<enemiesNames.size(); i++){
-        enemyList.push_back(new Enemy(enemiesNames[i]));
+void fight(Hero* hero, Enemy* enemy){
+    bool validfight = true;
+    while(validfight){
+        cout << hero->getName() << " angriber " << enemy->getName() << endl;
+            enemy->tagSkade(hero->getStyrke());
+            if(enemy->erDoed()){
+                cout << hero->getName() << " vandt!!" << endl;
+                hero->gainXP(enemy->getXP());
+                enemy->setHP();
+                validfight = false;
+            }
+            cout << enemy->getName() << " angriber!!" <<endl;
+            hero->takeDamage(enemy->angrib());
+            if(hero->erDoed()){
+                cout << hero->getName() << " døde. Bedre held næste gang" << endl;
+                validfight = false;
+            }
     }
-    Enemies enemies(enemyList);
-    return enemies;
 }
 
 
+
 int main(){
-    Enemies enemies = createEnemies();
+
     cout << "Starting game ..." << endl;
     Hero hero;
     startGame(hero);
 
     while(true){
+        Grotte grotte(hero);
         cout << "\n--- Main Menu ---" << endl;
         cout << "1. Show Hero Stats" << endl;
-        cout << "2. Show Enemies" << endl;
-        cout << "3. Attack an Enemy" << endl;
+        cout << "2. Show Grotter" << endl;
+        cout << "3. Choose grotte" << endl;
         cout << "4. Exit Game" << endl; 
 
         int choice;
@@ -55,47 +67,70 @@ int main(){
             hero.getStats();
         }
         if(choice == 2){
-            enemies.printNames();
+            grotte.showEnemies();
         }
-        if(choice == 3){
-            cout << "Choose an enemy: " << endl;
-            enemies.printNames();
-            string chosenEnemy;
-            cin >> chosenEnemy;
-            if(chosenEnemy == "cheatcode"){
-                hero.setHP(10000);
-                hero.setStyrke(1000);
-                continue;
+        
+        if(choice ==3){
+            int grotteChoice;
+            cout << "Showing grotter" << endl;
+            grotte.showGrotteName();
+            cout << "Choose grotte: 1, 2 or 3!!" << endl;
+            cin >> grotteChoice;
+            if(grotteChoice == 1){
+                string chosenEnemy;
+                vector <Enemy*> currenctEnemies = grotte.getEnemyList();
+                cout << "Showing enemies in grotte" << endl;
+                grotte.showEnemies();
+                cout << "Choose an enemy" << endl;
+                cin >> chosenEnemy;
+                for(Enemy* enemy : currenctEnemies){
+                    if(chosenEnemy == enemy->getName()){
+                        fight(&hero, enemy);
+                    }
+                }
+
             }
-            Enemy* currentEnemy = enemies.getEnemy(chosenEnemy);
-            bool validEnemy = true;
-            if (currentEnemy == nullptr) {
-                cout << "Enemy not found! Please try again." << endl;
-                validEnemy = false;
+            
+        }
+        // if(choice == 6){
+        //     cout << "Choose an enemy: " << endl;
+        //     enemies.printNames();
+        //     string chosenEnemy;
+        //     cin >> chosenEnemy;
+        //     if(chosenEnemy == "cheatcode"){
+        //         hero.setHP(10000);
+        //         hero.setStyrke(1000);
+        //         continue;
+        //     }
+        //     Enemy* currentEnemy = enemies.getEnemy(chosenEnemy);
+        //     bool validEnemy = true;
+        //     if (currentEnemy == nullptr) {
+        //         cout << "Enemy not found! Please try again." << endl;
+        //         validEnemy = false;
     
-                // Clear cin state and ignore invalid input
-                cin.clear();
-                continue; // Prompt the user again
-            }
-            while(validEnemy){
-                cout << hero.getName() << " angriber " << currentEnemy->getName() << endl;
-                currentEnemy->tagSkade(hero.getStyrke());
-                if(currentEnemy->erDoed()){
-                    cout << hero.getName() << " vandt!!" << endl;
-                    hero.gainXP(currentEnemy->getXP());
-                    currentEnemy->setHP();
-                    break;
-                }
-                cout << currentEnemy->getName() << " angriber!!" <<endl;
-                hero.takeDamage(currentEnemy->angrib());
-                if(hero.erDoed()){
-                    cout << hero.getName() << " døde. Bedre held næste gang" << endl;
-                    return 0;
-                }
-            }
+        //         // Clear cin state and ignore invalid input
+        //         cin.clear();
+        //         continue; // Prompt the user again
+        //     }
+        //     while(validEnemy){
+        //         cout << hero.getName() << " angriber " << currentEnemy->getName() << endl;
+        //         currentEnemy->tagSkade(hero.getStyrke());
+        //         if(currentEnemy->erDoed()){
+        //             cout << hero.getName() << " vandt!!" << endl;
+        //             hero.gainXP(currentEnemy->getXP());
+        //             currentEnemy->setHP();
+        //             break;
+        //         }
+        //         cout << currentEnemy->getName() << " angriber!!" <<endl;
+        //         hero.takeDamage(currentEnemy->angrib());
+        //         if(hero.erDoed()){
+        //             cout << hero.getName() << " døde. Bedre held næste gang" << endl;
+        //             return 0;
+        //         }
+        //     }
             
             
-        }
+        // }
         if(choice == 4){
             cout << "Exiting game..." << endl;
             return 0;

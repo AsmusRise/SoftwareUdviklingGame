@@ -3,11 +3,12 @@
 Snake::Snake() {}
 
 Snake::Snake(int modifier) {
+    int adjustedModifier = newModifier(modifier);
     navn = "Snake";
-    basisHP = 10 * (1 + modifier / 10); // Matches the base HP from Enemy.cpp
+    basisHP = 10 * adjustedModifier; // Matches the base HP from Enemy.cpp
     hp = basisHP;
-    styrke = 3 * (1 + modifier / 10);  // Matches the strength from Enemy.cpp
-    xp = 400 * (1 + modifier / 10);    // Matches the XP from Enemy.cpp
+    styrke = 3 * adjustedModifier;  // Matches the strength from Enemy.cpp
+    xp = 400 * adjustedModifier;    // Matches the XP from Enemy.cpp
     modifierName = modifierNames[modifier];
 }
 

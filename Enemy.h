@@ -13,8 +13,9 @@ public:
     void setHP();
     int getXP();
     bool erDoed();
-    int getStyrke();
+    virtual int getStyrke();
     int getHP();
+    float newModifier(int);
     virtual ~Enemy();
 protected:
     string navn;

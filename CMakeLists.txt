@@ -11,6 +11,14 @@ set(SOURCES
     MainCharacter.cpp
     Enemy.cpp
     Enemies.cpp
+    Grotte.cpp
+    Goblin.cpp
+    Ape.cpp
+    Dragon.cpp
+    Hest.cpp
+    Snake.cpp
+    Unicorn.cpp
+    EnemyFactory.cpp
 )
 
 # Create the executable

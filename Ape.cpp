@@ -4,6 +4,7 @@ Ape::Ape() {}
 
 Ape::Ape(int modifier) {
     navn = "Ape";
+    int adjustedModifier = newModifier(modifier);
     basisHP = 30 * (1 + modifier / 10); // Matches the base HP from Enemy.cpp
     hp = basisHP;
     styrke = 5 * (1 + modifier / 10);   // Matches the strength from Enemy.cpp

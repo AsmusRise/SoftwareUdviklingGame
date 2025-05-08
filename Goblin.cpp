@@ -4,10 +4,11 @@ Goblin::Goblin() {}
 
 Goblin::Goblin(int modifier) {
     navn = "Goblin";
-    basisHP = 4 * (1 + modifier / 10); // Matches the base HP from Enemy.cpp
+    int adjustedModifier = newModifier(modifier);
+    basisHP = 4 * adjustedModifier; // Matches the base HP from Enemy.cpp
     hp = basisHP;
-    styrke = 2 * (1 + modifier / 10);  // Matches the strength from Enemy.cpp
-    xp = 200 * (1 + modifier / 10);    // Matches the XP from Enemy.cpp
+    styrke = 2 * adjustedModifier;  // Matches the strength from Enemy.cpp
+    xp = 200 * adjustedModifier;    // Matches the XP from Enemy.cpp
     modifierName = modifierNames[modifier];
 }
 

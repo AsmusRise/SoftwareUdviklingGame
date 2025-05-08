@@ -3,7 +3,7 @@
 
 EnemyFactory::EnemyFactory(){
     modifierNames = {"veryweak","weak","normal","strong","stronger","strongest","godlike"};
-    enemyNames = {"Horse","Goblin", "Ape", "Snake", "Unicorn", "Dragon"};
+    enemyNames = {"Hest","Goblin", "Ape", "Snake", "Unicorn", "Dragon"};
 }
 
 Enemy* EnemyFactory::createEnemy(string name, int modifier){
@@ -16,6 +16,7 @@ Enemy* EnemyFactory::createEnemy(string name, int modifier){
 
     //creating the object according to name.
     if(name == "Hest") {
+        cout << "Creating Hest with modifier: " << modifier << endl;
         return new Hest(modifier);
     }
     else if(name == "Goblin"){
@@ -41,11 +42,19 @@ Enemy* EnemyFactory::createEnemy(string name, int modifier){
 
 vector<Enemy*> EnemyFactory::createEnemyList(int heroAttack, int heroHP){
     vector <Enemy*> enemyList;
+    cout << "Creating enemies with factory: size of enemynameslist is: " << enemyNames.size() << endl;
     for(string name : enemyNames){
-        for(int i = 0; i<enemyNames.size(); i++){
-            Enemy* enemy = createEnemy(name, i);
-            if(enemy && enemy->getStyrke()<heroAttack && enemy->getHP()<heroHP){
+        cout << "trying to create enemy: " << name << endl;
+        for(int modifier = 1; modifier<enemyNames.size()+1; modifier++){
+            Enemy* enemy = createEnemy(name, modifier);
+            //checks if enemy hp*strength is bigger than hp*strength of hero
+            //also checks if enemy/hero > 0.6 to make sure enemy is not too weak.
+            //cout << "the division: " << (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) << endl;
+            if(enemy && enemy->getStyrke()*enemy->getHP()<heroAttack*heroHP){
                 enemyList.push_back(enemy);
+                cout << "made an enemy succesfully: " << enemy->getName() << endl;
+                cout << "The division: " << (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) << endl;
+                cout << "styrke, HP, xp" << enemy->getStyrke()*1.0 << enemy->getHP() << enemy->getXP() << endl;
             }
             else{
                 delete enemy;
@@ -54,5 +63,5 @@ vector<Enemy*> EnemyFactory::createEnemyList(int heroAttack, int heroHP){
     }
     return enemyList;
 }
-    
+
 EnemyFactory::~EnemyFactory(){}

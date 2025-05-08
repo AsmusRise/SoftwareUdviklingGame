@@ -72,27 +72,27 @@ void Hero::showHeroes(){
     }
 }
 
-string Hero::getName(){
+string Hero::getName() const{
     return navn;
 }
 
-int Hero::getXP(){
+int Hero::getXP() const{
     return xp;
 }
 
-int Hero::getLevel(){
+int Hero::getLevel() const{
     return level;
 }
 
-int Hero::getStyrke(){
+int Hero::getStyrke() const{
     return styrke;
 }
 
-int Hero::getHP(){
+int Hero::getHP() const{
     return hp;
 }
 
-void Hero::getStats(){
+void Hero::getStats() const{
     cout << "\n ---- Hero stats ----" << endl;
             cout << "Name: " << getName() << endl;
             cout << "XP: " << getXP() << endl;

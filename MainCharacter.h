@@ -18,12 +18,12 @@ public:
     void showHeroes();
 
     //get metoder:
-    string getName();
-    int getXP();
-    int getLevel();
-    int getStyrke();
-    int getHP();
-    void getStats();
+    string getName() const;
+    int getXP() const;
+    int getLevel() const;
+    int getStyrke() const;
+    int getHP() const;
+    void getStats() const;
 
     //set metoder:
     void setHP(int);

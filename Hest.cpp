@@ -4,15 +4,22 @@ Hest::Hest(){}
 
 Hest::Hest(int modifier) {
     navn = "Hest";
-    basisHP = 4 * (1 + modifier / 10);
+    int adjustedModifier = newModifier(modifier);
+    basisHP = 4 * adjustedModifier;
     hp = basisHP;
-    styrke = 1 * (1 + modifier / 10);
-    xp = 100 * (1 + modifier / 10);
+    styrke = 1 * adjustedModifier;
+    xp = 100 * adjustedModifier;
     modifierName = modifierNames[modifier];
 }
 
+
+
 string Hest::getName(){
     return modifierName + navn;
+}
+
+int Hest::getStyrke(){
+    return styrke;
 }
 
 Hest::~Hest(){}

@@ -30,11 +30,16 @@ bool Enemy::erDoed(){
 }
 
 int Enemy::getStyrke(){
-    return styrke;
+    return styrke*1.0;
 }
 
 int Enemy::getHP(){
     return hp;
+}
+
+float Enemy::newModifier(int modifier){
+    float newModifier = (1 + modifier / 10.0);
+    return newModifier;
 }
 
 Enemy::~Enemy(){}
