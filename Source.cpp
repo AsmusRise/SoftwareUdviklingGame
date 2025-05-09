@@ -8,7 +8,7 @@ using namespace std;
 #include <unistd.h>
 #include <memory>
 
-void startGame(Hero& hero){
+void startGame(Hero& hero){ //function to initialize hero by create or choosing.
     string valg;
     while(true){
         cout << "Vil du lave eller vælge en eksisterende hero? (type [choose] or [create])" << endl;
@@ -25,12 +25,15 @@ void startGame(Hero& hero){
     }
 }
 
-void fight(Hero* hero, Enemy* enemy){
+void fight(Hero* hero, Enemy* enemy){ 
+    //function to fight between hero and enemy
+    //validfight checks if the fight is ongoing.
     bool validfight = true;
     while(validfight){
         cout << hero->getName() << " angriber " << enemy->getName() << endl;
             enemy->tagSkade(hero->getStyrke());
             if(enemy->erDoed()){
+                //hero gets xp, and hp is reset (hero heals back up)
                 cout << hero->getName() << " vandt!!" << endl;
                 hero->gainXP(enemy->getXP());
                 enemy->setHP();
@@ -39,6 +42,8 @@ void fight(Hero* hero, Enemy* enemy){
             }
             cout << enemy->getName() << " angriber!!" <<endl;
             hero->takeDamage(enemy->angrib());
+
+            //checks if hero is dead
             if(hero->erDoed()){
                 cout << hero->getName() << " døde. Bedre held næste gang" << endl;
                 validfight = false;
@@ -133,6 +138,7 @@ int main(){
             cout << "All enemies in ";
             grotter[grotteChoice-1]->showGrotteName();
             cout << " have been defeated!!" << endl;
+            hero.gainGold(grotter[grotteChoice-1]->getGrotteGold());
             
         }
         // if(choice == 6){

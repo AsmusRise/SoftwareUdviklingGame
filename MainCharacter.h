@@ -1,5 +1,6 @@
 #pragma once
 using namespace std;
+#include <unistd.h> //used for sleep function
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,15 +8,17 @@ using namespace std;
 class Hero{
 public: 
     Hero();
-    void createHero(string name);
+    void createHero(string);
     void setName();
     void chooseHero();
     int attack();
     void takeDamage(int);
     void levelUp();
-    void gainXP(int XP);
+    void gainXP(int);
+    void gainGold(int);
     void initializeHeroes();
     void showHeroes();
+
 
     //get metoder:
     string getName() const;
@@ -23,6 +26,7 @@ public:
     int getLevel() const;
     int getStyrke() const;
     int getHP() const;
+    int getGold() const;
     void getStats() const;
 
     //set metoder:
@@ -38,5 +42,6 @@ private:
     int styrke;
     int hp;
     int baseHP;
-    vector<string> heroes = {};
+    int gold;
+    vector<string> heroes;
 };

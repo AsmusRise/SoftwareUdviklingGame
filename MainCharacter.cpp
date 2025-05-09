@@ -1,13 +1,14 @@
 #include "MainCharacter.h"
 
 Hero::Hero(){
-    initializeHeroes();
+    heroes = {"August", "Goatie", "Goldielock", "Kaj", "Alfredo"};
     navn = "empty";
     xp = 0;
     level = 1;
     styrke = 2;
     hp = 10;
     baseHP=10;
+    gold = 0;
 }
 
 void Hero::createHero(string n){
@@ -59,11 +60,12 @@ void Hero::gainXP(int XP){
         xp =xp-level*1000;
         levelUp();
         getStats();
+        sleep(2);
     }
 }
 
-void Hero::initializeHeroes(){
-    heroes = {"August", "Goatie", "Goldielock", "Kaj", "Alfredo"};
+void Hero::gainGold(int g){
+    gold +=g;
 }
 
 void Hero::showHeroes(){
@@ -92,6 +94,10 @@ int Hero::getHP() const{
     return hp;
 }
 
+int Hero::getGold() const{
+    return gold;
+}
+
 void Hero::getStats() const{
     cout << "\n ---- Hero stats ----" << endl;
             cout << "Name: " << getName() << endl;
@@ -99,6 +105,7 @@ void Hero::getStats() const{
             cout << "Level: " << getLevel() << endl;
             cout << "Styrke: " << getStyrke() << endl;
             cout << "HP: " << getHP() << endl;
+            cout << "Gold: " << getGold() << endl;
 }
 
 void Hero::setHP(int h){

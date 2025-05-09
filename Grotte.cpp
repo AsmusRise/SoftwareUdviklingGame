@@ -10,7 +10,7 @@ Grotte::Grotte(const Hero& hero, float caveModifier){
     int StrenghtAndHP = heroStrength * heroHP;
     enemies = factory.createEnemyList(heroStrength*(1+caveModifier/10), heroHP*(1+caveModifier/10));
     grotteName = "Grotte LVL " + to_string(hero.getLevel()-1+caveModifier);
-    grotteGold = hero.getLevel() * 50;
+    grotteGold = 50*caveModifier;
 }
 
 vector <Enemy*>& Grotte::getEnemyList(){ //why am i having this?
