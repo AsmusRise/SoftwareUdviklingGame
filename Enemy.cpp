@@ -9,11 +9,11 @@ string Enemy::getName(){
     return navn;
 }
 
-int Enemy::angrib(){
+float Enemy::angrib(){
     return styrke;
 }
 
-void Enemy::tagSkade(int s){
+void Enemy::tagSkade(float s){
     hp -= s;
 }
 
@@ -21,7 +21,7 @@ void Enemy::setHP(){
     hp = basisHP;
 }
 
-int Enemy::getXP(){
+float Enemy::getXP(){
     return xp;
 }
 
@@ -29,16 +29,16 @@ bool Enemy::erDoed(){
     return hp<0;
 }
 
-int Enemy::getStyrke(){
+float Enemy::getStyrke(){
     return styrke*1.0;
 }
 
-int Enemy::getHP(){
+float Enemy::getHP(){
     return hp;
 }
 
-float Enemy::newModifier(int modifier){
-    float newModifier = (1 + modifier / 10.0);
+float Enemy::newModifier(float modifier){
+    float newModifier = 0.5+(modifier/5);
     return newModifier;
 }
 

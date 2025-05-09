@@ -4,11 +4,12 @@
 class Grotte{
 public:
     Grotte();
-    Grotte(const Hero&);
-    vector <Enemy*> getEnemyList();
+    Grotte(const Hero&, float);
+    vector <Enemy*>& getEnemyList();
     void showEnemies() const;
     void showGrotteName() const;
     int getGrotteGold() const;
+    bool grottePopulated() const;
     ~Grotte();
 protected:
     vector <Enemy*> enemies;

@@ -6,6 +6,7 @@ using namespace std;
 #include <string>
 #include <iostream>
 #include <unistd.h>
+#include <memory>
 
 void startGame(Hero& hero){
     string valg;
@@ -34,6 +35,7 @@ void fight(Hero* hero, Enemy* enemy){
                 hero->gainXP(enemy->getXP());
                 enemy->setHP();
                 validfight = false;
+                break;
             }
             cout << enemy->getName() << " angriber!!" <<endl;
             hero->takeDamage(enemy->angrib());
@@ -51,9 +53,21 @@ int main(){
     cout << "Starting game ..." << endl;
     Hero hero;
     startGame(hero);
+    int heroCurrentLVL = 0;
+    vector<unique_ptr<Grotte>> grotter;
 
     while(true){
-        Grotte grotte(hero);
+        if(heroCurrentLVL != hero.getLevel()){
+            
+            if(heroCurrentLVL!=0){
+                grotter.clear();
+            }
+            for(int i=1; i<4; i++){
+                grotter.push_back(make_unique<Grotte>(hero,i));
+            }
+            heroCurrentLVL = hero.getLevel();
+        }
+        
         cout << "\n--- Main Menu ---" << endl;
         cout << "1. Show Hero Stats" << endl;
         cout << "2. Show Grotter" << endl;
@@ -66,30 +80,59 @@ int main(){
         if (choice ==1){
             hero.getStats();
         }
-        if(choice == 2){
-            grotte.showEnemies();
+        else if(choice == 2){
+            for(const auto& grottePtr : grotter){
+                const Grotte& grotte = *grottePtr;
+                grotte.showGrotteName();
+            }
         }
         
-        if(choice ==3){
-            int grotteChoice;
+        else if(choice ==3){
+            int grotteChoice=0;
             cout << "Showing grotter" << endl;
-            grotte.showGrotteName();
-            cout << "Choose grotte: 1, 2 or 3!!" << endl;
-            cin >> grotteChoice;
-            if(grotteChoice == 1){
-                string chosenEnemy;
-                vector <Enemy*> currenctEnemies = grotte.getEnemyList();
-                cout << "Showing enemies in grotte" << endl;
-                grotte.showEnemies();
+            for(const auto& grottePtr : grotter){
+                const Grotte& grotte = *grottePtr;
+                grotte.showGrotteName();
+                cout << "\n";
+            }
+            while(1>grotteChoice || grotteChoice>3){
+                cout << "Choose grotte: 1, 2 or 3!!" << endl;
+                cin >> grotteChoice;
+            }
+            string chosenEnemy;
+            vector <Enemy*>& currenctEnemies = grotter[grotteChoice-1]->getEnemyList();
+            while(grotter[grotteChoice-1]->grottePopulated()){
+                cout << "Showing enemies in ";
+                grotter[grotteChoice -1]->showGrotteName();
+                cout << endl;
+
+                grotter[grotteChoice-1]->showEnemies();
                 cout << "Choose an enemy" << endl;
                 cin >> chosenEnemy;
                 for(Enemy* enemy : currenctEnemies){
                     if(chosenEnemy == enemy->getName()){
                         fight(&hero, enemy);
+                        if(hero.erDoed()){
+                            return 0;
+                        }
+                        auto it = find(currenctEnemies.begin(), currenctEnemies.end(), enemy);
+                        if (it != currenctEnemies.end()) {
+                            cout << "deleting enemy" << enemy->getName() << endl;
+                            currenctEnemies.erase(it);
+                            delete enemy;
+                            
+                        } else {
+                            cout << "Enemy not found in the list!" << endl;
+                        }
+                        break;
                     }
+
                 }
 
             }
+            cout << "All enemies in ";
+            grotter[grotteChoice-1]->showGrotteName();
+            cout << " have been defeated!!" << endl;
             
         }
         // if(choice == 6){
@@ -131,11 +174,11 @@ int main(){
             
             
         // }
-        if(choice == 4){
+        else if(choice == 4){
             cout << "Exiting game..." << endl;
             return 0;
         }
-        if(choice != 1 && choice != 2 && choice != 3 && choice != 4){
+        else if(choice != 1 && choice != 2 && choice != 3 && choice != 4){
 
             cout << "Invalid input: " << choice <<  " try again!!" << endl;
         }

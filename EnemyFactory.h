@@ -17,7 +17,7 @@ class EnemyFactory{
 public:
     EnemyFactory();
     Enemy* createEnemy(string n, int m);
-    vector <Enemy*> createEnemyList(int, int);
+    vector <Enemy*> createEnemyList(float, float);
     ~EnemyFactory();
 protected:
     vector<string> modifierNames;

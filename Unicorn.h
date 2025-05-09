@@ -5,6 +5,5 @@ class Unicorn : public Enemy {
 public:
     Unicorn();         
     Unicorn(int);   
-    string getName() override;  
     ~Unicorn();        
 };

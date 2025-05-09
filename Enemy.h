@@ -8,21 +8,21 @@ class Enemy{
 public:
     Enemy();
     virtual string getName();
-    int angrib();
-    void tagSkade(int);
+    float angrib();
+    void tagSkade(float);
     void setHP();
-    int getXP();
+    float getXP();
     bool erDoed();
-    virtual int getStyrke();
-    int getHP();
-    float newModifier(int);
+    virtual float getStyrke();
+    float getHP();
+    float newModifier(float);
     virtual ~Enemy();
 protected:
     string navn;
-    int basisHP;
-    int hp;
-    int styrke;
-    int xp;
+    float basisHP;
+    float hp;
+    float styrke;
+    float xp;
     vector <string> modifierNames;
     string modifierName;
 };
