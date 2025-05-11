@@ -9,7 +9,7 @@ Ape::Ape(int modifier) {
     float adjustedModifier = newModifier(modifier);
     hp = 30 * adjustedModifier; 
     styrke = 5 * adjustedModifier;   
-    xp = 1000 * adjustedModifier;    
+    xp = 2000 * adjustedModifier;    
 }
 
 

@@ -3,16 +3,16 @@
 
 Grotte::Grotte(){}
 
-// Constructs a grotte based on the hero's attributes and a difficulty modifier.
+// Constructs a grotte based on the hero's attributes and a difficulty modifier cavelevel.
 // The modifier increases the strength of enemies and the amount of gold in the grotte.
-Grotte::Grotte(const Hero& hero, float caveModifier){
-    cout << "Grotte constructor called" << endl;
+Grotte::Grotte(const Hero& hero, float caveLevel){
     int heroStrength = hero.getStyrke();
     int heroHP = hero.getHP();
     int StrenghtAndHP = heroStrength * heroHP;
-    enemies = factory.createEnemyList(heroStrength*(1+caveModifier/10), heroHP*(1+caveModifier/10));
-    grotteName = "Grotte LVL " + to_string(hero.getLevel()-1+int(caveModifier));
-    grotteGold = 50*caveModifier;
+    enemies = factory.createEnemyList(heroStrength*(1+caveLevel/10), heroHP*(1+caveLevel/10));
+    grotteName = "Grotte LVL " + to_string(int(caveLevel));
+    grotteLevel = int(caveLevel);
+    grotteGold = 50*caveLevel;
 }
 
 // Returns a reference to the list of enemies in the grotte.
@@ -22,14 +22,11 @@ vector <Enemy*>& Grotte::getEnemyList(){
 }
 
 void Grotte::showEnemies() const{
-    cout << "in showEnemies function " << endl;
     int numberOfEnemies = 0;
     for(Enemy* enemy : enemies){
-        //cout << "show enemies For loop" << endl;
         cout << enemy->getName() << endl;
         numberOfEnemies ++;
     }
-    cout << "Number of enemies: " << numberOfEnemies << endl;
 }
 
 void Grotte::showGrotteName() const{
@@ -40,13 +37,16 @@ int Grotte::getGrotteGold() const{
     return grotteGold;
 }
 
+int Grotte::getGrotteLevel() const{
+    return grotteLevel;
+}
+
 bool Grotte::grottePopulated() const{
     return (enemies.size()>0);
 }
 
 Grotte::~Grotte(){
     //cleanup
-    cout << "deleting enemies" << endl;
     for(Enemy* enemy : enemies){
         delete enemy;
     }

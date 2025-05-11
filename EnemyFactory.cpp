@@ -1,11 +1,13 @@
 #include "EnemyFactory.h"
 
 
-EnemyFactory::EnemyFactory(){
+EnemyFactory::EnemyFactory(){ //list of 
     modifierNames = {"veryweak","weak","normal","strong","stronger","strongest","godlike"};
     enemyNames = {"Hest","Goblin", "Ape", "Snake", "Unicorn", "Dragon"};
 }
 
+// Creates an enemy of the specified type and difficulty modifier.
+// The modifier must be between 1 and the size of `modifierNames`.
 Enemy* EnemyFactory::createEnemy(string name, int modifier){
     //check for valid m
     int validCalls =  modifierNames.size();
@@ -39,6 +41,7 @@ Enemy* EnemyFactory::createEnemy(string name, int modifier){
     }
 }
 
+//creating list of enemies which will populate cave
 vector<Enemy*> EnemyFactory::createEnemyList(float heroAttack, float heroHP){
     vector <Enemy*> enemyList;
     cout << "Creating enemies with factory: size of enemynameslist is: " << enemyNames.size() << endl;
@@ -48,7 +51,7 @@ vector<Enemy*> EnemyFactory::createEnemyList(float heroAttack, float heroHP){
             //checks if enemy hp*strength is bigger than hp*strength of hero
             //also checks if enemy/hero > 0.6 to make sure enemy is not too weak.
             //cout << "the division: " << (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) << endl;
-            if(enemy && enemy->getStyrke()*enemy->getHP()<heroAttack*heroHP && (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) >0.4 ){
+            if(enemy && enemy->getStyrke()*enemy->getHP()<heroAttack*heroHP && (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) >0.2 ){
                 enemyList.push_back(enemy);
                }
             else{

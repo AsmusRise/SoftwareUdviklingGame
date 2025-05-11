@@ -18,10 +18,10 @@ void Hero::setName(){
 
 void Hero::chooseHero(){
     while(true){
-        cout << "Showing heroes: " << endl;
+        cout << "\nShowing heroes: " << endl;
         showHeroes();
         string chooseName;
-        cout << "Choose hero: " << endl;
+        cout << "\nChoose hero: ";
         cin >> chooseName;
         for(int i = 0; i < heroes.size(); i++) {
             if (heroes[i] == chooseName) {
@@ -41,6 +41,8 @@ void Hero::takeDamage(int d){
     hp -=d;
 }
 
+// Increases the hero's level, base HP, and strength.
+// Resets the hero's HP to the new base HP.
 void Hero::levelUp(){
     level++;
     baseHP +=2;
@@ -48,6 +50,8 @@ void Hero::levelUp(){
     styrke += 1;
 }
 
+// Adds XP to the hero. If the XP exceeds the threshold for the current level,
+// the hero levels up, and the excess XP is carried over.
 void Hero::gainXP(int XP){
     xp += XP;
     hp = baseHP;

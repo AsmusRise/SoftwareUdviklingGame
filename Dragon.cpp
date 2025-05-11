@@ -9,7 +9,7 @@ Dragon::Dragon(int modifier) {
     float adjustedModifier = newModifier(modifier);
     hp = 100 * adjustedModifier;
     styrke = 10 * adjustedModifier;  
-    xp = 3000 * adjustedModifier;    
+    xp = 30000 * adjustedModifier;    
 }
 
 
