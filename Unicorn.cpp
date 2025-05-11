@@ -2,13 +2,14 @@
 
 Unicorn::Unicorn() {}
 
+//Creating enemy with attributes relating to the type of enemy
+//modifier used to increase difficulty and xp gained from defeating enemy
 Unicorn::Unicorn(int modifier) {
     navn = modifierNames[modifier]+"Unicorn";
     float adjustedModifier = newModifier(modifier);
-    basisHP = 5 * adjustedModifier; // Matches the base HP from Enemy.cpp
-    hp = basisHP;
-    styrke = 8 * adjustedModifier;  // Matches the strength from Enemy.cpp
-    xp = 1500 * adjustedModifier;   // Matches the XP from Enemy.cpp
+    hp = 5 * adjustedModifier;
+    styrke = 8 * adjustedModifier; 
+    xp = 1500 * adjustedModifier;   
 }
 
 Unicorn::~Unicorn() {}

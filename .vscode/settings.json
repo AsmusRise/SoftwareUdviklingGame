@@ -65,5 +65,11 @@
         "span": "cpp",
         "typeindex": "cpp",
         "variant": "cpp"
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
     }
 }

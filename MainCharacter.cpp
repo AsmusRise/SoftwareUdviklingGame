@@ -11,10 +11,6 @@ Hero::Hero(){
     gold = 0;
 }
 
-void Hero::createHero(string n){
-    navn = n;
-}
-
 void Hero::setName(){
     cout << "Choose a name: " << endl;
     cin >> navn;
@@ -110,10 +106,6 @@ void Hero::getStats() const{
 
 void Hero::setHP(int h){
     hp = h;
-}
-
-void Hero::setStyrke(int s){
-    styrke = s;
 }
 
 bool Hero::erDoed(){

@@ -16,10 +16,15 @@ using namespace std;
 class EnemyFactory{
 public:
     EnemyFactory();
+
+    //creating enemy with name of enemy and modifier (from one to length of modifiernames)
     Enemy* createEnemy(string n, int m);
-    vector <Enemy*> createEnemyList(float, float);
+
+    //creating list of enemies which will populate cave
+    //based on hero attributes /strength of hero.
+    vector <Enemy*> createEnemyList(float att, float hp); 
     ~EnemyFactory();
 protected:
-    vector<string> modifierNames;
-    vector<string> enemyNames;
+    vector<string> modifierNames; //list for names describing strenght of enemy
+    vector<string> enemyNames; //list of base names which enemies can have.
 };

@@ -8,40 +8,38 @@ using namespace std;
 class Hero{
 public: 
     Hero();
-    void createHero(string);
     void setName();
     void chooseHero();
-    int attack();
-    void takeDamage(int);
+    int attack(); //figthing logic
+    void takeDamage(int); //figthing logic
     void levelUp();
-    void gainXP(int);
+    void gainXP(int); //figthing logic
     void gainGold(int);
-    void initializeHeroes();
     void showHeroes();
 
 
     //get metoder:
     string getName() const;
-    int getXP() const;
-    int getLevel() const;
-    int getStyrke() const;
-    int getHP() const;
-    int getGold() const;
-    void getStats() const;
+    int getXP() const; //used for gaining xp logic
+    int getLevel() const; 
+    int getStyrke() const; //used in fighting logic
+    int getHP() const; //used in fighting logic
+    int getGold() const; //used to see hero gold.
+    void getStats() const; //used to see all stats
 
-    //set metoder:
-    void setHP(int);
-    void setStyrke(int);
-    bool erDoed();
+    void setHP(int); //used to reset hp
+
+
+    bool erDoed(); //returns false if hero is alive.
     ~Hero();
     
 private:
-    string navn;
-    int xp;
-    int level;
-    int styrke;
-    int hp;
-    int baseHP;
-    int gold;
-    vector<string> heroes;
+    string navn;       // The hero's name.
+    int xp;            // The hero's current XP.
+    int level;         // The hero's current level.
+    int styrke;        // The hero's strength (used for attacking enemies).
+    int hp;            // The hero's current HP.
+    int baseHP;        // The hero's base HP (used to reset HP after a fight).
+    int gold;          // The hero's current gold.
+    vector<string> heroes; // A list of available hero names.
 };

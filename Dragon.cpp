@@ -2,13 +2,14 @@
 
 Dragon::Dragon() {}
 
+//Creating enemy with attributes relating to the type of enemy
+//modifier used to increase difficulty and xp gained from defeating enemy
 Dragon::Dragon(int modifier) {
     navn = modifierNames[modifier]+"Dragon";
     float adjustedModifier = newModifier(modifier);
-    basisHP = 100 * adjustedModifier; // Matches the base HP from Enemy.cpp
-    hp = basisHP;
-    styrke = 10 * adjustedModifier;   // Matches the strength from Enemy.cpp
-    xp = 3000 * adjustedModifier;    // Matches the XP from Enemy.cpp
+    hp = 100 * adjustedModifier;
+    styrke = 10 * adjustedModifier;  
+    xp = 3000 * adjustedModifier;    
 }
 
 

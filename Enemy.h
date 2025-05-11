@@ -7,10 +7,9 @@ using namespace std;
 class Enemy{
 public:
     Enemy();
-    virtual string getName();
+    virtual string getName(); 
     float angrib();
     void tagSkade(float);
-    void setHP();
     float getXP();
     bool erDoed();
     virtual float getStyrke();
@@ -19,7 +18,6 @@ public:
     virtual ~Enemy();
 protected:
     string navn;
-    float basisHP;
     float hp;
     float styrke;
     float xp;

@@ -8,6 +8,8 @@ using namespace std;
 #include <unistd.h>
 #include <memory>
 
+void makeNewCave(Hero& hero, vector<unique_ptr<Grotte>>& grotter);
+
 void startGame(Hero& hero){ //function to initialize hero by create or choosing.
     string valg;
     while(true){
@@ -27,7 +29,7 @@ void startGame(Hero& hero){ //function to initialize hero by create or choosing.
 
 void fight(Hero* hero, Enemy* enemy){ 
     //function to fight between hero and enemy
-    //validfight checks if the fight is ongoing.
+        // The `validfight` variable ensures the fight continues until either the hero or the enemy is defeated.
     bool validfight = true;
     while(validfight){
         cout << hero->getName() << " angriber " << enemy->getName() << endl;
@@ -36,7 +38,6 @@ void fight(Hero* hero, Enemy* enemy){
                 //hero gets xp, and hp is reset (hero heals back up)
                 cout << hero->getName() << " vandt!!" << endl;
                 hero->gainXP(enemy->getXP());
-                enemy->setHP();
                 validfight = false;
                 break;
             }
@@ -44,42 +45,117 @@ void fight(Hero* hero, Enemy* enemy){
             hero->takeDamage(enemy->angrib());
 
             //checks if hero is dead
-            if(hero->erDoed()){
+            if(hero->erDoed()){ //checks if hero is dead after attack
                 cout << hero->getName() << " døde. Bedre held næste gang" << endl;
                 validfight = false;
             }
     }
 }
 
+// Function: fightInGrotte
+// Purpose: Allows the hero to fight through a selected grotte, defeating enemies one by one.
+// Parameters:
+//   - hero: The hero object (passed by reference) whose stats will be updated during the fight.
+//   - grotter: A vector of unique pointers to grotter, representing the available caves.
+// Behavior:
+//   - Prompts the user to select a grotte.
+//   - Handles the fight logic for each enemy in the grotte.
+//   - Removes the grotte from the list once all enemies are defeated.
+void fightInGrotte(Hero& hero, vector<unique_ptr<Grotte>>& grotter){
+    int heroLevelAtStart = hero.getLevel();
+    //while loop for choosing a valid grotte
+    int grotteChoice=0;
+    while(grotteChoice <= 0 || grotteChoice > grotter.size() || grotter[grotteChoice - 1] == nullptr){
+        cout << "Choose a valid grotte: " << endl;
+        for(int i = 0; i < grotter.size(); i++){
+            grotter[i]->showGrotteName();
+            cout << "\n";      
+        }
+        cin >> grotteChoice;
+    }
+    int grotteChoiceIndex = grotteChoice-1; 
+
+    //choosing an enemy in the grotte
+    string chosenEnemy;
+    vector <Enemy*>& currenctEnemies = grotter[grotteChoiceIndex]->getEnemyList();
+    while(grotter[grotteChoiceIndex]->grottePopulated()){ //checks if enemies alive are in cave
+        cout << "Showing enemies in ";
+        grotter[grotteChoiceIndex]->showGrotteName();
+        cout << endl;
+
+        grotter[grotteChoiceIndex]->showEnemies();
+        cout << endl;
+        cout << "Choose an enemy" << endl;
+        cin >> chosenEnemy;
+
+        //looks for chosen enemy in chosen grotte
+        for(Enemy* enemy : currenctEnemies){
+            if(chosenEnemy == enemy->getName()){
+                int heroLlvBeforeFight = hero.getLevel(); 
+                fight(&hero, enemy);
+                if(hero.getLevel()-heroLlvBeforeFight == 1){ //hero has leveled one time. Its assumed an enemy doesnt have enough xp to level up twice.
+                    makeNewCave(hero, grotter);
+                }
+
+                if(hero.erDoed()){
+                    exit(0);
+                }
+
+                // creating iterator it which points to enemy
+                auto it = find(currenctEnemies.begin(), currenctEnemies.end(), enemy);
+                if (it != currenctEnemies.end()) { //if it points to enemy in vector
+                    cout << "deleting enemy " << enemy->getName() << endl;
+                    currenctEnemies.erase(it); //uses erase and iterator to erase enemy
+                    delete enemy; //delete enemy to free memory.
+                    
+                } else {
+                    cout << "Enemy not found in the list!" << endl;
+                }
+                break;
+            }
+
+        }
+
+    }
+    //while loop is over which means enemies in grotte has been defeated.
+    cout << "All enemies in ";
+    grotter[grotteChoiceIndex]->showGrotteName();
+    cout << " have been defeated!!" << endl;
+    hero.gainGold(grotter[grotteChoiceIndex]->getGrotteGold());
+    grotter.erase(grotter.begin() + (grotteChoiceIndex));
+
+    //if hero doesnt rise in level, one cave should be created nonetheless
+    if(hero.getLevel() == heroLevelAtStart){
+        makeNewCave(hero, grotter);
+    }
+}
+
+//small function creating and pushing grotte to back of grotter vector. 
+void makeNewCave(Hero& hero, vector<unique_ptr<Grotte>>& grotter){
+    grotter.push_back(make_unique<Grotte>(hero, 3)); //hardcoded 3 to make a cave 3 levels over hero lvl.
+}
 
 
 int main(){
 
     cout << "Starting game ..." << endl;
-    Hero hero;
-    startGame(hero);
-    int heroCurrentLVL = 0;
+    Hero hero; //initialize hero
+    startGame(hero); //choosing or creating hero.
     vector<unique_ptr<Grotte>> grotter;
 
+    //make the first 3 caves
+    for(int i=1; i<4; i++){
+        grotter.push_back(make_unique<Grotte>(hero,i));
+    }
+
     while(true){
-        if(heroCurrentLVL != hero.getLevel()){
-            
-            if(heroCurrentLVL!=0){
-                grotter.clear();
-            }
-            for(int i=1; i<4; i++){
-                grotter.push_back(make_unique<Grotte>(hero,i));
-            }
-            heroCurrentLVL = hero.getLevel();
-        }
-        
         cout << "\n--- Main Menu ---" << endl;
         cout << "1. Show Hero Stats" << endl;
         cout << "2. Show Grotter" << endl;
         cout << "3. Choose grotte" << endl;
         cout << "4. Exit Game" << endl; 
 
-        int choice;
+        int choice; //choosing option 1-4
         cin >> choice;
         usleep(100);
         if (choice ==1){
@@ -93,93 +169,11 @@ int main(){
         }
         
         else if(choice ==3){
-            int grotteChoice=0;
-            cout << "Showing grotter" << endl;
-            for(const auto& grottePtr : grotter){
-                const Grotte& grotte = *grottePtr;
-                grotte.showGrotteName();
-                cout << "\n";
-            }
-            while(1>grotteChoice || grotteChoice>3){
-                cout << "Choose grotte: 1, 2 or 3!!" << endl;
-                cin >> grotteChoice;
-            }
-            string chosenEnemy;
-            vector <Enemy*>& currenctEnemies = grotter[grotteChoice-1]->getEnemyList();
-            while(grotter[grotteChoice-1]->grottePopulated()){
-                cout << "Showing enemies in ";
-                grotter[grotteChoice -1]->showGrotteName();
-                cout << endl;
-
-                grotter[grotteChoice-1]->showEnemies();
-                cout << "Choose an enemy" << endl;
-                cin >> chosenEnemy;
-                for(Enemy* enemy : currenctEnemies){
-                    if(chosenEnemy == enemy->getName()){
-                        fight(&hero, enemy);
-                        if(hero.erDoed()){
-                            return 0;
-                        }
-                        auto it = find(currenctEnemies.begin(), currenctEnemies.end(), enemy);
-                        if (it != currenctEnemies.end()) {
-                            cout << "deleting enemy" << enemy->getName() << endl;
-                            currenctEnemies.erase(it);
-                            delete enemy;
-                            
-                        } else {
-                            cout << "Enemy not found in the list!" << endl;
-                        }
-                        break;
-                    }
-
-                }
-
-            }
-            cout << "All enemies in ";
-            grotter[grotteChoice-1]->showGrotteName();
-            cout << " have been defeated!!" << endl;
-            hero.gainGold(grotter[grotteChoice-1]->getGrotteGold());
-            
+            fightInGrotte(hero,grotter);
+            if(hero.erDoed()){
+                return 0;
+            }   
         }
-        // if(choice == 6){
-        //     cout << "Choose an enemy: " << endl;
-        //     enemies.printNames();
-        //     string chosenEnemy;
-        //     cin >> chosenEnemy;
-        //     if(chosenEnemy == "cheatcode"){
-        //         hero.setHP(10000);
-        //         hero.setStyrke(1000);
-        //         continue;
-        //     }
-        //     Enemy* currentEnemy = enemies.getEnemy(chosenEnemy);
-        //     bool validEnemy = true;
-        //     if (currentEnemy == nullptr) {
-        //         cout << "Enemy not found! Please try again." << endl;
-        //         validEnemy = false;
-    
-        //         // Clear cin state and ignore invalid input
-        //         cin.clear();
-        //         continue; // Prompt the user again
-        //     }
-        //     while(validEnemy){
-        //         cout << hero.getName() << " angriber " << currentEnemy->getName() << endl;
-        //         currentEnemy->tagSkade(hero.getStyrke());
-        //         if(currentEnemy->erDoed()){
-        //             cout << hero.getName() << " vandt!!" << endl;
-        //             hero.gainXP(currentEnemy->getXP());
-        //             currentEnemy->setHP();
-        //             break;
-        //         }
-        //         cout << currentEnemy->getName() << " angriber!!" <<endl;
-        //         hero.takeDamage(currentEnemy->angrib());
-        //         if(hero.erDoed()){
-        //             cout << hero.getName() << " døde. Bedre held næste gang" << endl;
-        //             return 0;
-        //         }
-        //     }
-            
-            
-        // }
         else if(choice == 4){
             cout << "Exiting game..." << endl;
             return 0;

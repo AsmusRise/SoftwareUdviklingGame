@@ -2,13 +2,14 @@
 
 Snake::Snake() {}
 
+//Creating enemy with attributes relating to the type of enemy
+//modifier used to increase difficulty and xp gained from defeating enemy
 Snake::Snake(int modifier) {
     float adjustedModifier = newModifier(modifier);
     navn = modifierNames[modifier]+"Snake";
-    basisHP = 10 * adjustedModifier; // Matches the base HP from Enemy.cpp
-    hp = basisHP;
-    styrke = 3 * adjustedModifier;  // Matches the strength from Enemy.cpp
-    xp = 400 * adjustedModifier;    // Matches the XP from Enemy.cpp
+    hp = 10 * adjustedModifier; 
+    styrke = 3 * adjustedModifier;  
+    xp = 400 * adjustedModifier;    
 }
 
 Snake::~Snake() {}

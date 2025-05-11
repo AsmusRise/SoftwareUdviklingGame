@@ -17,10 +17,6 @@ void Enemy::tagSkade(float s){
     hp -= s;
 }
 
-void Enemy::setHP(){
-    hp = basisHP;
-}
-
 float Enemy::getXP(){
     return xp;
 }
@@ -37,6 +33,8 @@ float Enemy::getHP(){
     return hp;
 }
 
+// Calculates a new modifier value based on the input.
+// The modifier increases linearly with the input, starting at 0.5.
 float Enemy::newModifier(float modifier){
     float newModifier = 0.5+(modifier/5);
     return newModifier;

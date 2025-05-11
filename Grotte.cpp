@@ -3,17 +3,21 @@
 
 Grotte::Grotte(){}
 
+// Constructs a grotte based on the hero's attributes and a difficulty modifier.
+// The modifier increases the strength of enemies and the amount of gold in the grotte.
 Grotte::Grotte(const Hero& hero, float caveModifier){
     cout << "Grotte constructor called" << endl;
     int heroStrength = hero.getStyrke();
     int heroHP = hero.getHP();
     int StrenghtAndHP = heroStrength * heroHP;
     enemies = factory.createEnemyList(heroStrength*(1+caveModifier/10), heroHP*(1+caveModifier/10));
-    grotteName = "Grotte LVL " + to_string(hero.getLevel()-1+caveModifier);
+    grotteName = "Grotte LVL " + to_string(hero.getLevel()-1+int(caveModifier));
     grotteGold = 50*caveModifier;
 }
 
-vector <Enemy*>& Grotte::getEnemyList(){ //why am i having this?
+// Returns a reference to the list of enemies in the grotte.
+// This function is used to access and modify the enemies during a fight.
+vector <Enemy*>& Grotte::getEnemyList(){
     return enemies;
 }
 
@@ -29,7 +33,7 @@ void Grotte::showEnemies() const{
 }
 
 void Grotte::showGrotteName() const{
-    cout << grotteName << endl;
+    cout << grotteName << " ";
 }
 
 int Grotte::getGrotteGold() const{

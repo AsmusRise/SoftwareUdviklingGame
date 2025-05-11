@@ -2,13 +2,14 @@
 
 Goblin::Goblin() {}
 
+//Creating enemy with attributes relating to the type of enemy
+//modifier used to increase difficulty and xp gained from defeating enemy
 Goblin::Goblin(int modifier) {
     navn = modifierNames[modifier]+"Goblin";
     float adjustedModifier = newModifier(modifier);
-    basisHP = 4 * adjustedModifier; // Matches the base HP from Enemy.cpp
-    hp = basisHP;
-    styrke = 2 * adjustedModifier;  // Matches the strength from Enemy.cpp
-    xp = 200 * adjustedModifier;    // Matches the XP from Enemy.cpp
+    hp = 4 * adjustedModifier;
+    styrke = 2 * adjustedModifier;  
+    xp = 200 * adjustedModifier;    
 }
 
 
