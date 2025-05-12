@@ -44,7 +44,6 @@ Enemy* EnemyFactory::createEnemy(string name, int modifier){
 //creating list of enemies which will populate cave
 vector<Enemy*> EnemyFactory::createEnemyList(float heroAttack, float heroHP){
     vector <Enemy*> enemyList;
-    cout << "Creating enemies with factory: size of enemynameslist is: " << enemyNames.size() << endl;
     for(string name : enemyNames){
         for(int modifier = 1; modifier<enemyNames.size()+1; modifier++){
             Enemy* enemy = createEnemy(name, modifier);
