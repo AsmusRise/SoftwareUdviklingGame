@@ -9,6 +9,7 @@ Hero::Hero(){
     hp = 10;
     baseHP=10;
     gold = 0;
+    weapons = {};
 }
 
 void Hero::setName(){
@@ -34,6 +35,10 @@ void Hero::chooseHero(){
 }
 
 int Hero::attack(){
+    if(isWeaponEquipped){ //if weapon is equipped, the bonus dmg is added accordingly
+        currentWeapon->use();
+        return styrke*(1+currentWeapon->getStyrkeModifier()) + currentWeapon->getSkade();
+    }
     return styrke;
 }
 
@@ -110,6 +115,24 @@ void Hero::getStats() const{
 
 void Hero::setHP(int h){
     hp = h;
+}
+
+void Hero::equipWeapon(const Weapon& weapon){
+    for(Weapon& w : weapons){
+        if(w.getName() == weapon.getName()){
+            currentWeapon = &w;
+            cout << "Weapon equipped: " << weapon.getName() << endl;
+            return;
+        }
+    }
+    cout << "Weapon couldnt be found" << endl;
+}
+
+bool Hero::isWeaponEquipped(){
+    if(weapons.size()==0){
+        return false;
+    }
+    return currentWeapon->hasHolbarhed();
 }
 
 bool Hero::erDoed(){

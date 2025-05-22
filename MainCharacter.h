@@ -4,6 +4,7 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Weapons.h"
 
 class Hero{
 public: 
@@ -29,6 +30,9 @@ public:
 
     void setHP(int); //used to reset hp
 
+    void equipWeapon(const Weapon&);
+    bool isWeaponEquipped();
+
 
     bool erDoed(); //returns false if hero is alive.
     ~Hero();
@@ -42,4 +46,6 @@ private:
     int baseHP;        // The hero's base HP (used to reset HP after a fight).
     int gold;          // The hero's current gold.
     vector<string> heroes; // A list of available hero names.
+    vector<Weapon> weapons;
+    Weapon* currentWeapon;
 };
