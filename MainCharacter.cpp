@@ -117,6 +117,10 @@ void Hero::setHP(int h){
     hp = h;
 }
 
+void Hero::getNewWeapon(Weapon newWeapon){
+    weapons.push_back(newWeapon);
+}
+
 void Hero::equipWeapon(const Weapon& weapon){
     for(Weapon& w : weapons){
         if(w.getName() == weapon.getName()){

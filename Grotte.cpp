@@ -13,6 +13,21 @@ Grotte::Grotte(const Hero& hero, float caveLevel){
     grotteName = "Grotte LVL " + to_string(int(caveLevel));
     grotteLevel = int(caveLevel);
     grotteGold = 50*caveLevel;
+    if(caveLevel == 1){ //manuelt tilføjer våben i de første 5 caves, da generation ikke var krav
+        weaponInCave = Weapon("pind",0,1,10);
+    }
+    if(caveLevel == 2){
+        weaponInCave = Weapon("Metalrør",5,2,20);
+    }
+    if(caveLevel == 3){
+        weaponInCave = Weapon("Kniv",10,2,40);
+    }
+    if(caveLevel == 4){
+        weaponInCave = Weapon("Sværd",20,2,60);
+    }
+    if(caveLevel == 5){
+        weaponInCave = Weapon("Morgenstjerne",30,3,100);
+    }
 }
 
 // Returns a reference to the list of enemies in the grotte.
@@ -43,6 +58,14 @@ int Grotte::getGrotteLevel() const{
 
 bool Grotte::grottePopulated() const{
     return (enemies.size()>0);
+}
+
+bool Grotte::isWeaponInGrotte() const{
+    return !weaponInCave.getName().empty();
+}
+
+Weapon Grotte::getWeapon(){
+    return weaponInCave;
 }
 
 Grotte::~Grotte(){

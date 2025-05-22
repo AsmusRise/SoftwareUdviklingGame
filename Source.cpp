@@ -165,6 +165,9 @@ void fightInGrotte(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteL
     grotter[grotteChoiceIndex]->showGrotteName();
     cout << " have been defeated! !!!" << endl;
     hero.gainGold(grotter[grotteChoiceIndex]->getGrotteGold());
+    if(grotter[grotteChoiceIndex]->isWeaponInGrotte()){
+        hero.getNewWeapon(grotter[grotteChoiceIndex]->getWeapon());
+    }
     grotter.erase(grotter.begin() + grotteChoiceIndex);
 
     // If hero doesn't rise in level, one cave should be created nonetheless

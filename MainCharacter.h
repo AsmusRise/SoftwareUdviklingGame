@@ -30,6 +30,7 @@ public:
 
     void setHP(int); //used to reset hp
 
+    void getNewWeapon(Weapon);
     void equipWeapon(const Weapon&);
     bool isWeaponEquipped();
 

@@ -1,5 +1,6 @@
 #include "EnemyFactory.h"
 #include "MainCharacter.h"
+#include "Weapons.h"
 
 class Grotte{
 public:
@@ -11,6 +12,8 @@ public:
     int getGrotteLevel() const;
     int getGrotteGold() const;
     bool grottePopulated() const;
+    bool isWeaponInGrotte() const;
+    Weapon getWeapon();
     ~Grotte();
 protected:
     vector <Enemy*> enemies;
@@ -18,4 +21,5 @@ protected:
     int grotteLevel;
     int grotteGold;
     EnemyFactory factory;
+    Weapon weaponInCave;
 };
