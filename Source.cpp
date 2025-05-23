@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "MainCharacter.h"
 #include "Grotte.h"
+
 using namespace std;
 #include <string>
 #include <iostream>
@@ -35,7 +36,7 @@ void fight(Hero* hero, Enemy* enemy){
     bool validfight = true;
     while(validfight){
         cout << "\n" << hero->getName() << " attacks " << enemy->getName() << "!" << endl;
-        enemy->tagSkade(hero->getStyrke());
+        enemy->tagSkade(hero->attack());
         //sleep(1);
 
         if(enemy->erDoed()){
@@ -147,6 +148,9 @@ void fightInGrotte(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteL
                     exit(0);
                 }
 
+                hero.addKillToWeaponKillList(enemy->getName()); // Add enemy to weapon's kill list
+                hero.addToHeroKillList(enemy->getName()); // Add enemy to hero's kill list
+
                 // Remove defeated enemy
                 auto it = find(currenctEnemies.begin(), currenctEnemies.end(), enemy);
                 if (it != currenctEnemies.end()) {
@@ -166,6 +170,7 @@ void fightInGrotte(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteL
     cout << " have been defeated! !!!" << endl;
     hero.gainGold(grotter[grotteChoiceIndex]->getGrotteGold());
     if(grotter[grotteChoiceIndex]->isWeaponInGrotte()){
+        cout << "Weapon was found in grotte" << endl;
         hero.getNewWeapon(grotter[grotteChoiceIndex]->getWeapon());
     }
     grotter.erase(grotter.begin() + grotteChoiceIndex);
@@ -196,16 +201,20 @@ int main(){
     int grotteLevel = 3; //used for making new grotte level
 
     //make the first 3 caves
-    for(int i=1; i<4; i++){
+    for(int i=hero.getLevel(); i<hero.getLevel()+3; i++){
         grotter.push_back(make_unique<Grotte>(hero,i));
     }
+
+    cout << "\n The first 5-8 caves can be defeated without the use of a weapon: Be thoughtful when equipping a weapon, since a weapons durability wont last forever" << endl;
 
     while(true){
         cout << "\n--- Main Menu ---" << endl;
         cout << "1. Show Hero Stats" << endl;
-        cout << "2. Show Grotter" << endl;
-        cout << "3. Choose Grotte" << endl;
-        cout << "4. Exit Game" << endl;
+        cout << "2. Show weapon stats" << endl;
+        cout << "3. Equip a weapon" << endl;
+        cout << "4. Show Grotter" << endl;
+        cout << "5. Choose Grotte" << endl;
+        cout << "6. Exit Game" << endl;
         cout << "Your choice: ";
 
         int choice; //choosing option 1-4
@@ -215,7 +224,24 @@ int main(){
         if (choice ==1){
             hero.getStats();
         }
-        else if(choice == 2){
+        if (choice == 2){
+            hero.showWeaponStats();
+        }
+        else if(choice == 3){
+            if(hero.hasWeapon()){
+                hero.showWeapons();
+                cout << "Please choose a weapon by name: " << endl;
+                string weaponChoice;
+                cin >> weaponChoice;
+                hero.equipWeapon(weaponChoice);
+            }
+            else{
+                cout << hero.getName() << " has no weapons yet!!" << endl;
+            }
+        }
+
+
+        else if(choice == 4){
             cout << "\n--- Available Grotter ---" << endl;
             for(const auto& grottePtr : grotter){
                 const Grotte& grotte = *grottePtr;
@@ -224,17 +250,17 @@ int main(){
             }
         }
         
-        else if(choice ==3){
+        else if(choice ==5){
             fightInGrotte(hero,grotter, grotteLevel);
             if(hero.erDoed()){
                 return 0;
             }   
         }
-        else if(choice == 4){
+        else if(choice == 6){
             cout << "\nExiting game... Goodbye!" << endl;
             return 0;
         }
-        else if(choice != 1 && choice != 2 && choice != 3 && choice != 4){
+        else if(choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice !=5){
             cout << "\nInvalid input: " << choice << ". Please try again!" << endl;
         }
         sleep(1);

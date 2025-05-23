@@ -17,6 +17,7 @@ public:
     void gainXP(int); //figthing logic
     void gainGold(int);
     void showHeroes();
+    void addToHeroKillList(string enemyName); //used to add enemy to kill list
 
 
     //get metoder:
@@ -26,13 +27,18 @@ public:
     int getStyrke() const; //used in fighting logic
     int getHP() const; //used in fighting logic
     int getGold() const; //used to see hero gold.
-    void getStats() const; //used to see all stats
+    void getStats(); //used to see all stats
 
     void setHP(int); //used to reset hp
 
-    void getNewWeapon(Weapon);
-    void equipWeapon(const Weapon&);
-    bool isWeaponEquipped();
+    void getNewWeapon(Weapon); //used to add weapon to hero
+    void equipWeapon(const string); //used to equip a weapon
+    bool isWeaponEquipped(); //used to see if a weapon is equipped
+    void showWeapons() const; //used to show all weapons
+    bool hasWeapon() const; //used to see if hero has a weapon
+    vector<Weapon> getWeapons() const; //used to get all weapons
+    void showWeaponStats() const; //function for showing weapon stats
+    void addKillToWeaponKillList(string enemyName); //used to add enemy to weapon kill list
 
 
     bool erDoed(); //returns false if hero is alive.
@@ -49,4 +55,5 @@ private:
     vector<string> heroes; // A list of available hero names.
     vector<Weapon> weapons;
     Weapon* currentWeapon;
+    vector<string> heroKillList;   // A list of enemies the hero has defeated.
 };

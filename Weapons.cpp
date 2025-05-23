@@ -27,11 +27,16 @@ int Weapon::getHoldbarhed() const{
 }
 
 void Weapon::use(){
-    holdbarhed --;
+    holdbarhed =holdbarhed-1;
+    cout << "Weapon used, new holdbarhed: " << getHoldbarhed() << endl;
 }
 
 bool Weapon::hasHolbarhed(){
     return holdbarhed>0;
+}
+
+void Weapon::addToKillList(string enemyName){
+    killList.push_back(enemyName);
 }
 
 Weapon::~Weapon(){}

@@ -35,8 +35,12 @@ void Hero::chooseHero(){
 }
 
 int Hero::attack(){
-    if(isWeaponEquipped){ //if weapon is equipped, the bonus dmg is added accordingly
+    if(isWeaponEquipped()){ //if weapon is equipped, the bonus dmg is added accordingly
         currentWeapon->use();
+        if(currentWeapon->getHoldbarhed() ==0){
+            cout << "Weapon is broken !!! Please pick a new weapon to enhance fighting capeabilities!!!" << endl;
+            sleep(1);
+        }
         return styrke*(1+currentWeapon->getStyrkeModifier()) + currentWeapon->getSkade();
     }
     return styrke;
@@ -79,6 +83,10 @@ void Hero::showHeroes(){
     }
 }
 
+void Hero::addToHeroKillList(string enemyName){
+    heroKillList.push_back(enemyName);
+}
+
 string Hero::getName() const{
     return navn;
 }
@@ -103,14 +111,32 @@ int Hero::getGold() const{
     return gold;
 }
 
-void Hero::getStats() const{
-    cout << "\n ---- Hero stats ----" << endl;
+void Hero::getStats(){
+    if(isWeaponEquipped()){
+        cout << "\n ---- Hero stats with weapon ----" << endl; //to visualize what weapon does to strength.
+            cout << "Weapon equipped: " << currentWeapon->getName() << endl;
             cout << "Name: " << getName() << endl;
             cout << "XP: " << getXP() << endl;
             cout << "Level: " << getLevel() << endl;
-            cout << "Styrke: " << getStyrke() << endl;
+            cout << "Styrke: " << getStyrke()<< endl;
+            cout << "Styrke with weapon: " << getStyrke()*(1+currentWeapon->getStyrkeModifier()) + currentWeapon->getSkade() << endl;
             cout << "HP: " << getHP() << endl;
             cout << "Gold: " << getGold() << endl;
+    }
+    else{
+        cout << "\n ---- Hero stats ----" << endl;
+        cout << "Name: " << getName() << endl;
+        cout << "XP: " << getXP() << endl;
+        cout << "Level: " << getLevel() << endl;
+        cout << "Styrke: " << getStyrke() << endl;
+        cout << "HP: " << getHP() << endl;
+        cout << "Gold: " << getGold() << endl;
+    }
+    
+    if(weapons.size()!=0){
+        cout << "\n -----Weapons-----" << endl;
+        showWeapons();
+    } 
 }
 
 void Hero::setHP(int h){
@@ -121,11 +147,11 @@ void Hero::getNewWeapon(Weapon newWeapon){
     weapons.push_back(newWeapon);
 }
 
-void Hero::equipWeapon(const Weapon& weapon){
+void Hero::equipWeapon(const string weaponName){
     for(Weapon& w : weapons){
-        if(w.getName() == weapon.getName()){
+        if(w.getName() == weaponName){
             currentWeapon = &w;
-            cout << "Weapon equipped: " << weapon.getName() << endl;
+            cout << "Weapon equipped: " << weaponName << endl;
             return;
         }
     }
@@ -133,10 +159,51 @@ void Hero::equipWeapon(const Weapon& weapon){
 }
 
 bool Hero::isWeaponEquipped(){
+    
     if(weapons.size()==0){
         return false;
     }
     return currentWeapon->hasHolbarhed();
+}
+
+void Hero::showWeapons() const{
+    for(Weapon w : weapons){
+        if(w.hasHolbarhed()){
+            cout << "Weapon: " << w.getName() << endl;
+        }
+    }
+}
+
+bool Hero::hasWeapon() const{
+    return weapons.size()!=0;
+}
+
+vector<Weapon> Hero::getWeapons() const{
+    return weapons;
+}
+
+void Hero::showWeaponStats() const { //function for showing weapon stats
+    cout << "Showing weapon stats: " << endl;
+    if(weapons.size()>0){
+        for(Weapon w : weapons){
+            cout << "\n";
+            cout << "Weapon: " << w.getName() << endl;
+            cout << "Skade: " << w.getSkade() << endl;
+            cout << "SkadeModifier: " << w.getStyrkeModifier() << endl;
+            cout << "Holdbarhed: " << w.getHoldbarhed() << endl; 
+            sleep(2);
+        }
+    }
+    else{
+        cout << getName() << " has no weapons yet" << endl;
+    }
+    
+}
+
+void Hero::addKillToWeaponKillList(string enemyName){
+    if(isWeaponEquipped()){
+        currentWeapon->addToKillList(enemyName);
+    }
 }
 
 bool Hero::erDoed(){
