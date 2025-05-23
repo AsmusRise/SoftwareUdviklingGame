@@ -8,6 +8,11 @@ using namespace std;
 #include <unistd.h>
 #include <memory>
 
+// Include necessary SQL headers
+#include <QCoreApplication>
+#include <QtSql>
+#include <QSqlDatabase>
+
 void makeNewCave(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteLevel);
 
 void startGame(Hero& hero){ //function to initialize hero by create or choosing.
@@ -192,6 +197,42 @@ void makeNewCave(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteLev
     cout << "A new grotte (Level " << grotteLevel << ") has been created!" << endl;
 }
 
+
+Hero loadHeroFromDatabase(string heroName) { // Function to load hero from database
+    Hero hero;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Hero WHERE navn = :name");
+    query.bindValue(":name", QString::fromStdString(heroName));
+    if (query.exec() && query.next()) {
+        int heroID = query.value(0).toInt();
+        hero.setName(query.value(1).toString().toStdString());
+        hero.gainXP(query.value(2).toInt());
+        hero.setLevel(query.value(3).toInt());
+        hero.setStyrke(query.value(4).toInt());
+        hero.setHP(query.value(5).toInt());
+        hero.setBaseHP(query.value(6).toInt());
+        hero.gainGold(query.value(7).toInt());
+    
+
+        QSqlQuery weaponQuery; // Query to get weapons for the hero
+        weaponQuery.prepare("SELECT * FROM Weapon Where hero_id = heroID"); //
+        weaponQuery.bindValue(":heroID", heroID);
+        if (weaponQuery.exec()) { // Execute the query
+            while (weaponQuery.next()){ // Loop through the results
+                string weaponName = weaponQuery.value(1).toString().toStdString();
+                int weaponSkade = weaponQuery.value(2).toInt();
+                int weaponStyrkeModifier = weaponQuery.value(3).toInt();
+                int weaponHoldbarhed = weaponQuery.value(4).toInt();
+                Weapon weapon(weaponName, weaponSkade, weaponStyrkeModifier,weaponHoldbarhed);
+                hero.getNewWeapon(weapon);  // Add weapon to hero
+            }
+        }
+    }
+    else {
+        qDebug() << "Hero not found in database "<< endl;
+    }
+    return hero;
+}
 
 int main(){
     cout << "\n*** Welcome to the Terminal Game! ***" << endl;

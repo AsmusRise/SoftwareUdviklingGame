@@ -1,0 +1,30 @@
+
+create table Hero (
+  hero_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  navn char(25),
+  xp int,
+  level int,
+  styrke int,
+  hp int,
+  baseHP int,
+  gold int
+);
+
+create table Weapon (
+  weapon_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  navn char(25),
+  skade int,
+  styrkeModifier int,
+  holdbarhed int,
+  hero_id int,
+  FOREIGN KEY (hero_id) REFERENCES Hero(hero_id)
+);
+
+create table KillLog (
+  log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  hero_id int,
+  weapon_id int,
+  enemy_name char(25),
+  FOREIGN KEY (hero_id) REFERENCES Hero(hero_id),
+  FOREIGN KEY (weapon_id) REFERENCES Weapon(weapon_id)
+);

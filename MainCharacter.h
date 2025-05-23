@@ -19,6 +19,12 @@ public:
     void showHeroes();
     void addToHeroKillList(string enemyName); //used to add enemy to kill list
 
+    //methods used for SQL database
+    void setLevel(int);
+    void setStyrke(int);
+    void setHP(int);
+    void setBaseHP(int);
+
 
     //get metoder:
     string getName() const;
