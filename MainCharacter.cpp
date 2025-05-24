@@ -17,6 +17,24 @@ void Hero::setName(){
     cin >> navn;
 }
 
+void Hero::setLevel(int lvl){
+    level=lvl;
+}
+
+void Hero::setBaseHP(int h){
+    baseHP = h;
+}
+
+void Hero::setStyrke(int s){
+    styrke=s;
+}
+
+
+
+void Hero::chooseNameByCode(string name){
+    navn = name;
+}
+
 void Hero::chooseHero(){
     while(true){
         cout << "\nShowing heroes: " << endl;
@@ -105,6 +123,10 @@ int Hero::getStyrke() const{
 
 int Hero::getHP() const{
     return hp;
+}
+
+int Hero::getBaseHp() const{
+    return baseHP;
 }
 
 int Hero::getGold() const{

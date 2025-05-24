@@ -10,6 +10,7 @@ class Hero{
 public: 
     Hero();
     void setName();
+    void chooseNameByCode(string);
     void chooseHero();
     int attack(); //figthing logic
     void takeDamage(int); //figthing logic
@@ -22,8 +23,8 @@ public:
     //methods used for SQL database
     void setLevel(int);
     void setStyrke(int);
-    void setHP(int);
     void setBaseHP(int);
+    void setHP(int); //used to reset hp
 
 
     //get metoder:
@@ -32,10 +33,11 @@ public:
     int getLevel() const; 
     int getStyrke() const; //used in fighting logic
     int getHP() const; //used in fighting logic
+    int getBaseHp() const;
     int getGold() const; //used to see hero gold.
     void getStats(); //used to see all stats
 
-    void setHP(int); //used to reset hp
+    
 
     void getNewWeapon(Weapon); //used to add weapon to hero
     void equipWeapon(const string); //used to equip a weapon

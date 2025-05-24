@@ -2,6 +2,7 @@ using namespace std;
 #pragma once
 #include <string>
 #include <iostream>
+#include <vector>
 
 class Weapon
 {
@@ -22,6 +23,7 @@ public:
     int getHoldbarhed() const;
 
     void addToKillList(string);
+    vector<string> getKillList() const;
 
     void use(); //decreases holbarhed
     bool hasHolbarhed();

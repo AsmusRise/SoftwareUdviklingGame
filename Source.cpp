@@ -187,6 +187,8 @@ void fightInGrotte(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteL
     }
 }
 
+
+
 //small function creating and pushing grotte to back of grotter vector. 
 void makeNewCave(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteLevel) {
     // Increment the grotte level for the new grotte
@@ -197,6 +199,10 @@ void makeNewCave(Hero& hero, vector<unique_ptr<Grotte>>& grotter, int& grotteLev
     cout << "A new grotte (Level " << grotteLevel << ") has been created!" << endl;
 }
 
+// int findAvailableHeroID(){
+//     QSqlQuery query;
+//     query.prepare
+// }
 
 Hero loadHeroFromDatabase(string heroName) { // Function to load hero from database
     Hero hero;
@@ -205,7 +211,7 @@ Hero loadHeroFromDatabase(string heroName) { // Function to load hero from datab
     query.bindValue(":name", QString::fromStdString(heroName));
     if (query.exec() && query.next()) {
         int heroID = query.value(0).toInt();
-        hero.setName(query.value(1).toString().toStdString());
+        hero.chooseNameByCode(query.value(1).toString().toStdString());
         hero.gainXP(query.value(2).toInt());
         hero.setLevel(query.value(3).toInt());
         hero.setStyrke(query.value(4).toInt());
@@ -229,12 +235,98 @@ Hero loadHeroFromDatabase(string heroName) { // Function to load hero from datab
         }
     }
     else {
-        qDebug() << "Hero not found in database "<< endl;
+        qDebug() << "Hero not found in database "<< Qt::endl;;
     }
     return hero;
 }
 
-int main(){
+void saveHeroInDatabase(Hero& hero){
+
+    qDebug() << "Is database open:" << QSqlDatabase::database().isOpen();
+    qDebug() << "Driver name:" << QSqlDatabase::database().driverName();
+
+    
+    QSqlQuery query;
+    query.prepare("INSERT INTO Hero (navn, xp, level, styrke, hp, baseHP, gold) VALUES (:name, :xp, :level, :styrke, :hp, :baseHP, :gold)");
+
+    query.bindValue(":name", QString::fromStdString(hero.getName()));
+    query.bindValue(":xp", hero.getXP());
+    query.bindValue(":level", hero.getLevel());
+    query.bindValue(":styrke", hero.getStyrke());
+    query.bindValue(":hp", hero.getHP());
+    query.bindValue(":baseHP", hero.getBaseHp()); 
+    query.bindValue(":gold", hero.getGold());
+
+    qDebug() << "Hero INSERT SQL:" << query.lastQuery();
+    qDebug() << "Bound values:" << query.boundValues();
+    if (!query.exec()) {
+        qDebug() << "Error saving hero to database:" << query.lastError().text();
+    }
+
+    //get generated hero_id
+    int heroID = query.lastInsertId().toInt(); // Get the ID of the newly inserted hero
+
+    //insert weapons
+    for(Weapon w : hero.getWeapons()){
+        QSqlQuery weaponQuery;
+        weaponQuery.prepare("INSERT INTO Weapon (navn, skade, styrkeModifier, holdbarhed, hero_id) VALUES (:name, :skade, :styrkeModifier, :holdbarhed, :heroId)");
+        weaponQuery.bindValue(":name", QString::fromStdString(w.getName()));
+        weaponQuery.bindValue(":skade", w.getSkade());
+        weaponQuery.bindValue(":styrkeModifier", w.getStyrkeModifier());
+        weaponQuery.bindValue(":holdbarhed", w.getHoldbarhed());
+        weaponQuery.bindValue(":heroId", heroID); // Bind the hero ID to the weapon
+        if(!weaponQuery.exec()){
+            qDebug() << "Weapon values:" << weaponQuery.boundValues();
+            //qDebug() << "Error saving weapon to database: " << weaponQuery.lastError().text();
+            continue;
+        }
+        
+        int weaponID = weaponQuery.lastInsertId().toInt(); // Get the ID of the newly inserted weapon
+
+        //store every kill of every weapon
+        for(string enemyName : w.getKillList()){
+            QSqlQuery killQuery;
+            killQuery.prepare("INSERT INTO KillLog (hero_id, weapon_id, enemy_name) VALUES (:heroId, :weaponId, :enemyName)");
+            killQuery.bindValue(":heroId",heroID);
+            killQuery.bindValue(":weaponId", weaponID);
+            killQuery.bindValue(":enemyName",QString::fromStdString(enemyName));
+            
+            if(!killQuery.exec()){
+                qDebug() << "Error saving kill log: " << killQuery.lastError().text();
+            }
+        }
+    }
+}
+
+void initDatabase() {
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("GameData.db");
+    db.open();
+
+    if (!db.open()) {
+        qDebug() << "Database connection failed:" << db.lastError().text();
+        exit(1);
+    } else {
+        qDebug() << "Database opened successfully.";
+    }
+
+    // Sanity test: Can we SELECT from the database?
+    QSqlQuery testQuery;
+    bool selectOK = testQuery.exec("SELECT name FROM sqlite_master WHERE type='table'");
+    if (!selectOK) {
+        qDebug() << "SELECT failed:" << testQuery.lastError().text();
+    } else {
+        qDebug() << "Tables:";
+        while (testQuery.next()) {
+            qDebug() << " -" << testQuery.value(0).toString();
+        }
+    }
+}
+
+int main(int argc, char *argv[]){
+    QCoreApplication app(argc, argv);
+    initDatabase();
+
     cout << "\n*** Welcome to the Terminal Game! ***" << endl;
     Hero hero; //initialize hero
     startGame(hero); //choosing or creating hero.
@@ -248,6 +340,7 @@ int main(){
 
     cout << "\n The first 5-8 caves can be defeated without the use of a weapon: Be thoughtful when equipping a weapon, since a weapons durability wont last forever" << endl;
 
+
     while(true){
         cout << "\n--- Main Menu ---" << endl;
         cout << "1. Show Hero Stats" << endl;
@@ -256,6 +349,7 @@ int main(){
         cout << "4. Show Grotter" << endl;
         cout << "5. Choose Grotte" << endl;
         cout << "6. Exit Game" << endl;
+        cout << "7. Manual test insert" << endl;
         cout << "Your choice: ";
 
         int choice; //choosing option 1-4
@@ -298,9 +392,57 @@ int main(){
             }   
         }
         else if(choice == 6){
+            cout << "Would you like to save hero before exit?" << endl;
+            string saveHeroChoice; 
+            cin >> saveHeroChoice;
+            if(saveHeroChoice == "yes"){
+                cout << "SAVING HERO...";
+                saveHeroInDatabase(hero);
+                sleep(5);
+            }
+
             cout << "\nExiting game... Goodbye!" << endl;
             return 0;
         }
+        if(choice == 7){
+            QSqlQuery test;
+
+            // Print out which driver is being used and whether the DB is open
+            qDebug() << "Driver name:" << QSqlDatabase::database().driverName();
+            qDebug() << "Is database open:" << QSqlDatabase::database().isOpen();
+
+            // Prepare the insert query
+            bool prepareSuccess = test.prepare(
+                "INSERT INTO Hero (navn, xp, level, styrke, hp, baseHP, gold) "
+                "VALUES (:name, :xp, :level, :styrke, :hp, :baseHP, :gold)"
+            );
+            
+            if (!prepareSuccess) {
+                qDebug() << "Prepare failed:" << test.lastError().text();
+                return 0;
+            }
+
+            // Bind values
+            test.bindValue(":name", "TestHero");
+            test.bindValue(":xp", 0);
+            test.bindValue(":level", 1);
+            test.bindValue(":styrke", 2);
+            test.bindValue(":hp", 10);
+            test.bindValue(":baseHP", 10);
+            test.bindValue(":gold", 0);
+
+            // Log query & bindings
+            qDebug() << "Query to execute:" << test.lastQuery();
+            qDebug() << "Bound values:" << test.boundValues();
+
+            // Execute
+            if (!test.exec()) {
+                qDebug() << "Insert failed:" << test.lastError().text();
+            } else {
+                qDebug() << "Insert successful!";
+            }
+        }
+
         else if(choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice !=5){
             cout << "\nInvalid input: " << choice << ". Please try again!" << endl;
         }

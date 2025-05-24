@@ -20,6 +20,9 @@ set(SOURCES
     EnemyFactory.cpp
     Weapons.cpp
 )
+find_package(Qt5Sql REQUIRED)
 
 # Create the executable
 add_executable(TerminalGame ${SOURCES})
+
+target_link_libraries(TerminalGame Qt5::Core Qt5::Sql)
