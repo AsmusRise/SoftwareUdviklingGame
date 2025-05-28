@@ -10,6 +10,7 @@ Hero::Hero(){
     baseHP=10;
     gold = 0;
     weapons = {};
+    currentWeapon = nullptr;
 }
 
 void Hero::setName(){
@@ -182,7 +183,7 @@ void Hero::equipWeapon(const string weaponName){
 
 bool Hero::isWeaponEquipped(){
     
-    if(weapons.size()==0){
+    if(currentWeapon == nullptr){
         return false;
     }
     return currentWeapon->hasHolbarhed();
@@ -213,6 +214,8 @@ void Hero::showWeaponStats() const { //function for showing weapon stats
             cout << "Skade: " << w.getSkade() << endl;
             cout << "SkadeModifier: " << w.getStyrkeModifier() << endl;
             cout << "Holdbarhed: " << w.getHoldbarhed() << endl; 
+            cout << "number of enemies slain: " << w.getKillList().size();
+            cout << "\n";
             sleep(2);
         }
     }
@@ -222,10 +225,15 @@ void Hero::showWeaponStats() const { //function for showing weapon stats
     
 }
 
-void Hero::addKillToWeaponKillList(string enemyName){
+void Hero::addKillToKillList(string enemyName){
     if(isWeaponEquipped()){
         currentWeapon->addToKillList(enemyName);
     }
+    heroKillList.push_back(enemyName);
+}
+
+vector <string> Hero::getHeroKillList() const {
+    return heroKillList;
 }
 
 bool Hero::erDoed(){

@@ -39,7 +39,7 @@ void Weapon::addToKillList(string enemyName){
     killList.push_back(enemyName);
 }
 
-vector<string> Weapon::getKillList() const {
+vector<string> Weapon::getKillList() const{
     return killList;
 }
 
