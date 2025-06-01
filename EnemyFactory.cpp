@@ -15,6 +15,10 @@ Enemy* EnemyFactory::createEnemy(string name, int modifier){
         cout << "no valid modifier argument" << endl;
         return nullptr;
     }
+    if(name.empty()){
+        cout << "Invalid enemy name: name empty" << endl;
+        return nullptr;
+    }
 
     //creating the object according to name.
     if(name == "Hest") {
@@ -47,14 +51,16 @@ vector<Enemy*> EnemyFactory::createEnemyList(float heroAttack, float heroHP){
     for(string name : enemyNames){
         for(int modifier = 1; modifier<enemyNames.size()+1; modifier++){
             Enemy* enemy = createEnemy(name, modifier);
-            //checks if enemy hp*strength is bigger than hp*strength of hero
-            //also checks if enemy/hero > 0.6 to make sure enemy is not too weak.
-            //cout << "the division: " << (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) << endl;
-            if(enemy && enemy->getStyrke()*enemy->getHP()<heroAttack*heroHP && (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) >0.2 ){
-                enemyList.push_back(enemy);
-               }
-            else{
-                delete enemy;
+            if(enemy){
+                //checks if enemy hp*strength is bigger than hp*strength of hero
+                //also checks if enemy/hero > 0.6 to make sure enemy is not too weak.
+                //cout << "the division: " << (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) << endl;
+                if(enemy && enemy->getStyrke()*enemy->getHP()<heroAttack*heroHP && (enemy->getStyrke()*enemy->getHP())*1.0/(heroAttack*heroHP) >0.2 ){
+                    enemyList.push_back(enemy);
+                   }
+                else{
+                    delete enemy;
+                }
             }
         }
     }

@@ -227,8 +227,14 @@ void Hero::showWeaponStats() const { //function for showing weapon stats
 
 void Hero::addKillToKillList(string enemyName){
     if(isWeaponEquipped()){
+        if(currentWeapon == nullptr){
+            cout << "Error: currentweapon is null!" << endl;
+            return;
+        }
+        cout << "Adding to weapon kill list: " << enemyName << endl;
         currentWeapon->addToKillList(enemyName);
     }
+    cout << "Adding to hero kill list: " << enemyName << endl;
     heroKillList.push_back(enemyName);
 }
 

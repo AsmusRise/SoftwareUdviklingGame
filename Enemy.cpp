@@ -2,6 +2,12 @@
 
 Enemy::Enemy(){
     modifierNames = {"veryweak","weak","normal","strong","stronger","strongest","godlike"};
+    navn = "Unnamed Enemy";
+    hp = 0;
+    styrke = 0;
+    xp = 0;
+    std::cout << "Enemy created: " << navn << " with HP: " << hp << " and Damage: " << styrke << std::endl;
+
 }
 
 

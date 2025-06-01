@@ -46,7 +46,7 @@ public:
     bool hasWeapon() const; //used to see if hero has a weapon
     vector<Weapon> getWeapons() const; //used to get all weapons
     void showWeaponStats() const; //function for showing weapon stats
-    void addKillToKillList(string enemyName); //used to add enemy to weapon kill list
+    void addKillToKillList(string); //used to add enemy to weapon kill list
     vector<string> getHeroKillList() const;
 
 

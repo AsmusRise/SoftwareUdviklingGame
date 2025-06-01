@@ -18,7 +18,7 @@ Grotte::Grotte(const Hero& hero, float caveLevel){
         cout << "grotte 1 created with weapon" << endl;
     }
     if(int(caveLevel) == 2){
-        weaponInCave = Weapon("Metalrør",5,2,20);
+        weaponInCave = Weapon("Metalroer",5,2,20);
         cout << "grotte 2 created with weapon" << endl;
     }
     if(int(caveLevel) == 3){
@@ -26,7 +26,7 @@ Grotte::Grotte(const Hero& hero, float caveLevel){
         cout << "grotte 3 created with weapon" << endl;
     }
     if(int(caveLevel) == 4){
-        weaponInCave = Weapon("Sværd",20,2,60);
+        weaponInCave = Weapon("Svaerd",20,2,60);
     }
     if(int(caveLevel) == 5){
         weaponInCave = Weapon("Morgenstjerne",30,3,100);
@@ -41,9 +41,11 @@ vector <Enemy*>& Grotte::getEnemyList(){
 
 void Grotte::showEnemies() const{
     int numberOfEnemies = 0;
+    int enemyIndex = 1;
     for(Enemy* enemy : enemies){
-        cout << enemy->getName() << endl;
+        cout << enemyIndex << ": "<< enemy->getName() << endl;
         numberOfEnemies ++;
+        enemyIndex++;
     }
 }
 

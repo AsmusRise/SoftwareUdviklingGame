@@ -1,3 +1,4 @@
+#pragma once
 #include "EnemyFactory.h"
 #include "MainCharacter.h"
 #include "Weapons.h"

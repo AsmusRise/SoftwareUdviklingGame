@@ -36,7 +36,16 @@ bool Weapon::hasHolbarhed(){
 }
 
 void Weapon::addToKillList(string enemyName){
-    killList.push_back(enemyName);
+    if(this == nullptr){
+        cout << "Error: weapon object is null" << endl;
+        return;
+    }
+    cout << "Adding enemy to kill list: " << enemyName << endl;
+    cout << "Current kill list size: " << killList.size() << endl;
+    if(enemyName.size()>1 && enemyName.size()<50){ //check for valid lengths of enemyname
+        killList.push_back(enemyName);
+    }
+    cout << "New kill list size: " << killList.size() << endl;
 }
 
 vector<string> Weapon::getKillList() const{
