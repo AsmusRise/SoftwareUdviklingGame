@@ -92,7 +92,7 @@ int main(int argc, char *argv[]){ //
             cout << "\nPlease choose an action for SQL analysis:" << endl;
 
             cout << "\n1. Show heroes alphabetically" << endl;
-            cout << "2. Show number of heroes " << endl;
+            cout << "2. Show number of enemies defeated by each hero" << endl;
             cout << "3. For given hero, show number of enemies defeated by weapon" << endl;
             cout << "4. For each weapon type, show hero having most kill with weapon" << endl;
             int SqlChoice;
