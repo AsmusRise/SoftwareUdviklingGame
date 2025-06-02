@@ -1,0 +1,3 @@
+/home/asmusrise/Documents/softwareUdvikling/Game/build/CMakeFiles/TerminalGame.dir
+/home/asmusrise/Documents/softwareUdvikling/Game/build/CMakeFiles/edit_cache.dir
+/home/asmusrise/Documents/softwareUdvikling/Game/build/CMakeFiles/rebuild_cache.dir
